@@ -1,0 +1,421 @@
+1.Install Selenium IDE. Write a test suite containing minimum 4 test cases for different 
+formats.
+
+<html>
+ <head>
+ <title>prac1</title>
+ <script language="javascript">
+ function addition()
+ {
+ var num1=parseInt(document.arithmetic.n1.value);
+ var num2=parseInt(document.arithmetic.n2.value);
+ var result=num1+num2;
+ document.arithmetic.res.value=result;
+ }
+ function subtraction()
+ {
+ var num1=parseInt(document.arithmetic.n1.value);
+ var num2=parseInt(document.arithmetic.n2.value);
+ var result=num1-num2;
+ document.arithmetic.res.value=result;
+ }
+ function multiplication()
+ {
+ var num1=parseInt(document.arithmetic.n1.value);
+ var num2=parseInt(document.arithmetic.n2.value);
+ var result=num1*num2;
+ document.arithmetic.res.value=result;
+ }
+ function division()
+ {
+ var num1=parseInt(document.arithmetic.n1.value);
+ var num2=parseInt(document.arithmetic.n2.value);
+ var result=num1/num2;
+ document.arithmetic.res.value=result;
+ }
+ </script>
+ </head>
+ <body>
+ <h1 align="center"> Arithmetic Operations </h1>
+ <form name="arithmetic">
+ <table border="1" align="center">
+ 
+ <tr>
+ <td>Number 1: </td>
+ <td><input type="text" name="n1" size="20"></td>
+ </tr>
+ 
+ <tr>
+ <td>Number 2: </td>
+ <td><input type="text" name="n2" size="20"></td>
+ </tr>
+ 
+ <tr>
+ <td colspan=2>
+ <input type="button" name="add" value="Add" 
+onclick="javascript:addition();">&nbsp;
+ <input type="button" name="sub" value="Subtract" 
+onclick="javascript:subtraction();">&nbsp;
+ <input type="button" name="mul" value="Multiply" 
+onclick="javascript:multiplication();">&nbsp;
+ <input type="button" name="div" value="Divide" 
+onclick="javascript:division();">&nbsp;
+ </td>
+ </tr>
+ 
+ <tr>
+ <td colspan="2">Result is: <input type="text" name="res" size="20" 
+value=""></td>
+ </tr>
+ 
+ </table>
+ </form>
+ </body>
+</html>
+
+jsp file
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+ <head>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <title>JSP Page</title>
+ </head>
+ <body align="center">
+ <h1>Test Cases IDE</h1>
+ <a href="index.html">Arithmetic Operations</a>
+ </body>
+</html>
+
+
+
+Install Selenium Server(Selenium RC) and demonstrate it using a script in Java
+
+<html>
+<head>
+<script type="text/javascript">
+function gcd()
+{
+var x,y;
+x=parseInt(document.myform.n1.value);
+y=parseInt(document.myform.n2.value);
+while(x!=y)
+{
+if(x>y){x=x-y;}
+else{y=y-x;}
+}
+document.myform.result.value=x;
+}
+</script>
+</head>
+<body>
+<center>
+<h1>---Program to calculate GCD of two numbers---</h1>
+<hr color="red">
+<form name="myform">
+Enter Number 1: <input type="text" name="n1" value=""> <br> <br>
+Enter Number 2: <input type="text" name="n2" value=""> <br> <br>
+<input type="button" name="btn" value="Get GCD" onClick="gcd()"><br><br>
+GCD: <input type="text" name="result" value="">
+</form>
+</center>
+</body>
+</html
+
+java file
+
+package gcdpackage;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
+public class Test {
+static String driverPath = "C:\\Users\\Usman\\503\\geckodriver.exe";
+public static void main(String[] args) {
+System.setProperty("webdriver.gecko.driver",driverPath);
+//DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+//capabilities.setCapability("marionette",true);
+//ProfilesIni allProfiles = new ProfilesIni();
+FirefoxProfile fp = new FirefoxProfile();
+fp.setPreference(FirefoxProfile.PORT_PREFERENCE,"7055");
+FirefoxOptions options = new FirefoxOptions();
+options.setProfile(fp);
+WebDriver driver=new FirefoxDriver(options);//(capabilities);
+//WebDriver driver=new ChromeDriver();
+driver.get("file:///D:/Usman/College/503%20pracs/gcdhtml.html");
+driver.manage().window().maximize();
+driver.findElement(By.name("n1")).sendKeys("36");
+driver.findElement(By.name("n2")).sendKeys("6");
+driver.findElement(By.name("btn")).click();
+String 
+result=driver.findElement(By.name("result")).getAttribute("name=result");
+System.out.println("GCD="+result);
+}
+}
+
+5.Write and test a program to update 10 student records into Excel file(table).
+
+package excelwrite;
+import jxl.*; //used for WorkbookSettings,Workbook
+import jxl.write.*; //used for WriteException,WritableWorkbook,WritableSheet,Label
+import jxl.write.Number; //used for Number
+import java.io.*; //used for IOException,File
+import java.util.Locale; //used for Locale
+public class Excelwriter {
+public static void main(String[] args) throws IOException,WriteException {
+// TODO Auto-generated method stub
+int r=0,c=0;
+String header[]={"Student 
+Name","Subject1","Subject2","Subject3","Total"};
+String 
+sname[]={"Carls","James","Paul","Philip","Smith","Thomson","Rhodey","Stark","Gary"
+,"AnneMarie"};
+int marks[]={50,45,60,55,70,45,67,78,89,90,30};
+File file = new File("student.xls");
+WorkbookSettings wbSettings = new WorkbookSettings();
+wbSettings.setLocale(new Locale("en", "EN"));
+WritableWorkbook workbook = Workbook.createWorkbook(file, 
+wbSettings);
+workbook.createSheet("Report", 0);
+WritableSheet excelSheet = workbook.getSheet(0);
+//creating header row
+for(r=0;r<1;r++) {
+for(c=0;c<header.length;c++) {
+Label l=new Label(c,r,header[c]);
+excelSheet.addCell(l);
+}
+}
+//filling name in column1
+for(r=1;r<=sname.length;r++) {
+for(c=0;c<1;c++) {
+Label l=new Label(c,r,sname[r-1]);
+excelSheet.addCell(l);
+}
+}
+//filling name in column2,3,4
+for(r=1;r<=sname.length;r++) {
+for(c=1;c<4;c++) {
+Number num = new Number(c, r, marks[r-1]);
+excelSheet.addCell(num);
+}
+}
+//filling name in total
+for(r=1;r<=sname.length;r++) {
+for(c=4;c<5;c++) {
+int total=marks[r-1]+marks[r-1]+marks[r-1];
+Number num = new Number(c, r, total);
+excelSheet.addCell(num);
+}
+}
+workbook.write();
+workbook.close();
+System.out.println("Excel File Created!!!!!");
+}
+}
+
+
+
+
+6.Write and test a program to select the number of students from Excel file(table) who have 
+scored 60 or more in any one subject(or all subjects)
+
+package excelread;
+import java.io.File;
+import java.io.IOException;
+import jxl.Cell;
+import jxl.CellType;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
+public class Excelreader {
+private String inputFile;
+public void setInputFile(String inputFile) {this.inputFile = inputFile;}
+public void read() throws IOException {
+File inputWorkbook = new File(inputFile);
+Workbook w;
+boolean flag=false;
+int count=0;
+try {
+w = Workbook.getWorkbook(inputWorkbook);
+// Get the first sheet
+Sheet sheet = w.getSheet(0);
+// Loop over first 10 column and lines
+for (int j = 0; j < sheet.getRows(); j++) {
+for (int i = 0; i < sheet.getColumns()-1; i++) {
+Cell cell = sheet.getCell(i, j);
+if (cell.getType() == CellType.NUMBER) {
+if(Integer.parseInt(cell.getContents())>=60){
+flag = true;
+if(flag == true){
+count++;
+flag=false;
+}
+break;
+}
+}
+}
+}
+System.out.println("Total number of students who scored more 
+than 60 in one or more subjects: " +count);
+} 
+catch (BiffException e) {e.printStackTrace();}
+}
+public static void main(String[] args) throws IOException {
+Excelreader test = new Excelreader();
+test.setInputFile("C:\\Users\\Usman\\eclipseworkspace\\p5\\student.xls"); 
+test.read();
+}
+}
+
+
+7. no of object in a web page
+
+package p8;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.*;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.internal.ProfilesIni;
+public class FindAllLinks {
+static String driverPath = "C:\\Users\\Usman\\503\\geckodriver.exe";
+public static void main(String[] args) {
+System.setProperty("webdriver.gecko.driver",driverPath);
+//NOTE THAT: following commented lines are required for old machines
+//DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+ //capabilities.setCapability("marionette",true);
+ //ProfilesIni allProfiles = new ProfilesIni();
+ //FirefoxProfile fp = new FirefoxProfile();
+ //fp.setPreference(FirefoxProfile.PORT_PREFERENCE,"7055");
+ //FirefoxOptions options = new FirefoxOptions();
+ //options.setProfile(fp);
+WebDriver driver = new FirefoxDriver();
+String appUrl ="https://www.google.co.in/";
+driver.get(appUrl);
+java.util.List<WebElement> links = 
+driver.findElements(By.tagName("a"));
+for (int i = 1; i<links.size(); i=i+1)
+{
+System.out.println(links.get(i).getText());
+}
+System.out.println("Total No. of Links: "+links.size());
+//driver.quit();
+}
+}
+
+8.no of list in a combo box
+
+<select id="continents">
+<option value="Asia">Asia</option>
+<option value="Europe">Europe</option>
+<option value="Africa">Africa</option>
+</select>
+
+
+package p9;
+import java.util.List;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.*;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.internal.ProfilesIni;
+import org.openqa.selenium.support.ui.Select;
+public class ComboBox {
+static String driverPath = "C:\\Users\\Usman\\503\\geckodriver.exe";
+public static void main(String[] args) {
+ System.setProperty("webdriver.gecko.driver",driverPath);
+ //NOTE THAT: following commented lines are required for old machines
+ //DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+ //capabilities.setCapability("marionette",true);
+ //ProfilesIni allProfiles = new ProfilesIni();
+ //FirefoxProfile fp = new FirefoxProfile();
+ //fp.setPreference(FirefoxProfile.PORT_PREFERENCE,"7055");
+ //FirefoxOptions options = new FirefoxOptions();
+ //options.setProfile(fp);
+WebDriver driver = new FirefoxDriver();
+String appUrl ="https://www.toolsqa.com/automation-practice-form/"; 
+//DYNAMIC URL(WEBSITE)
+//String appUrl = "
+file:///D:/Usman/College/503%20pracs/combobox.html"; //STATIC URL(LOCAL FILE)
+driver.get(appUrl);
+Select oSelect = new
+Select(driver.findElement(By.id("continents")));
+//Select oSelect = new 
+Select(driver.findElement(By.tagName("select"))); //this works too
+List<WebElement> oSize = oSelect.getOptions();
+int iListSize = oSize.size();
+for(int i =0; i < iListSize ; i++)
+{
+// Storing the value of the option
+String sValue = oSelect.getOptions().get(i).getText();
+// Printing the stored value
+System.out.println(sValue);
+}
+System.out.println("Total No. Items in Dropdown: "+iListSize);
+//driver.quit();
+}
+}
+
+
+9. check and unchecked boxes
+
+<input type="checkbox" value="A">A<br>
+<input type="checkbox" value="B" CHECKED>B<br>
+<input type="checkbox" value="C">C<br>
+<input type="checkbox" value="D" CHECKED>D<br>
+<input type="checkbox" value="E">E<br>
+
+package p10;
+import java.util.List;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.*;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.internal.ProfilesIni;
+public class MultiCheckBox {
+static String driverPath = "C:\\Users\\Usman\\503\\geckodriver.exe";
+public static void main(String[] args) {
+System.setProperty("webdriver.gecko.driver",driverPath);
+//DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+//capabilities.setCapability("marionette",true);
+//ProfilesIni allProfiles = new ProfilesIni();
+//FirefoxProfile fp = new FirefoxProfile();
+//fp.setPreference(FirefoxProfile.PORT_PREFERENCE,"7055");
+//FirefoxOptions options = new FirefoxOptions();
+//options.setProfile(fp);
+WebDriver driver = new FirefoxDriver();
+String appUrl = "https://www.toolsqa.com/automation-practice-form/"; 
+//DYNAMIC URL(WEBSITE)
+//String appUrl = 
+"file:///D:/Usman/College/503%20pracs/multicheckbox.html"; //STATIC URL(LOCAL 
+FILE)
+driver.get(appUrl);
+ 
+ List<WebElement> checkBoxes = 
+driver.findElements(By.xpath("//input[@type='checkbox']"));
+ 
+ int checkedCount=0, uncheckedCount=0;
+ for(int i=0; i<checkBoxes.size(); i++){
+ System.out.println(i+" checkbox is selected 
+"+checkBoxes.get(i).isSelected());
+ if(checkBoxes.get(i).isSelected()) {checkedCount++;}
+ else {uncheckedCount++;}
+ }
+ //driver.quit();
+ System.out.println("No. of selected checkbox: "+checkedCount);
+ System.out.println("No. of unselected checkbox: "+uncheckedCount);
+}
+} 
+
+
+
